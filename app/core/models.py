@@ -3,7 +3,7 @@ Database models
 
 """
 
-
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
     PermissionsMixin
@@ -42,4 +42,22 @@ class User(AbstractBaseUser,PermissionsMixin):
     
     USERNAME_FIELD='email'
 
-    
+
+class Recipe(models.Model):
+    """Recipe object."""
+    user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    title=models.CharField(max_length=255)  
+    description = models.TextField(blank=True)       #more content here
+    time_minutes=models.IntegerField()
+    price=models.DecimalField(max_digits=5,decimal_places=2)
+    link=models.CharField(max_length=255,blank=True)
+    #ingredients=models.TextField(blank=True)
+    # recipe=models.TextField(blank=True)
+    # image=models.ImageField(null=True,upload_to='recipes/')
+
+    def __str__(self):
+        return self.title
+
+    # def get_absolute_url(self):
+    #     return f'/recipes/{self.id}'
+
