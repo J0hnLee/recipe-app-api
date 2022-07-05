@@ -11,7 +11,10 @@ from recipe import serializers
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
-    """ViewSet for the Recipe APIs."""
+    
+    """ViewSet for the Recipe APIs. \n
+        You can increase more details in the serializer class.
+    """
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = serializers.RecipeDetailSerializer

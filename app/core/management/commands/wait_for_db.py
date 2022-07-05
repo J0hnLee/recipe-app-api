@@ -13,8 +13,6 @@ class Command(BaseCommand):
     # def add_arguments(self, parser: CommandParser) -> None:
     #     return super().add_arguments(parser)
 
-    print('hello')
-
     def handle(self, *args, **options):
         """Entry point for the command."""
         self.stdout.write('Waiting for database...')

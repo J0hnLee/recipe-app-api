@@ -141,3 +141,6 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     
 }
+
+NOSE_ARGS = ['--nocapture',
+             '--nologcapture',]
