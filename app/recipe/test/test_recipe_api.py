@@ -70,8 +70,8 @@ class PrivateRecipeAPITests(TestCase):
         
     def test_retrive_recipes(self):
         """Test retrieving a list of recipes"""
-        create_recipe(self.user)
-        create_recipe(self.user)
+        create_recipe(user=self.user)
+        create_recipe(user=self.user)
 
         res = self.client.get(RECIPES_URL)
 
