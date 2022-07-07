@@ -31,10 +31,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         recipe = Recipe.objects.create(**validated_data)
         auth_user = self.context['request'].user
         for tag in tags_data:
-            tag_obj, created = Tag.objects.get_or_create(
-                user=auth_user,
-                **tag
-            )
+            tag_obj, created = Tag.objects.get_or_create(user=auth_user, **tag)
 
             recipe.tags.add(tag_obj)
         return recipe
@@ -44,4 +41,4 @@ class RecipeDetailSerializer(RecipeSerializer):
     """Serializer for recipe detail view."""
 
     class Meta(RecipeSerializer.Meta):
-        fields = RecipeSerializer.Meta.fields+['description']
+        fields = RecipeSerializer.Meta.fields + ['description']
