@@ -9,10 +9,21 @@ from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
 
-from core.models import  Tag
+from core.models import  (Recipe,Tag)
+from recipe.serializers import TagSerializer
 
 
 TAGS_URL = reverse('recipe:tag-list')
+
+def detail_url(tag_id):
+    """Return tag detail URL."""
+    return reverse('recipe:tag-detail', args=[tag_id])
+
+
+
+
+
+
 
 def create_user(email='user@example.com',password='testpass123'):
     """Create and return a user."""
@@ -28,7 +39,6 @@ class PublicTagsApiTests(TestCase):
     def test_login_required(self):
         """Test that login is required for retrieving tags."""
         res = self.client.get(TAGS_URL)
-
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
         
 class PrivateTagsApiTests(TestCase):
@@ -65,3 +75,34 @@ class PrivateTagsApiTests(TestCase):
         self.assertEqual(len(res.data), 1)
         self.assertEqual(res.data[0]['name'], tag.name)
         self.assertEqual(res.data[0]['id'], tag.id)
+        
+        
+    def test_update_tag(self):
+        """Test updating a tag."""
+        tag= Tag.objects.create(user=self.user, name='After Dinner')
+        payload={'name':'Dessert'}
+        res=self.client.patch(detail_url(tag.id), payload)
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        tag.refresh_from_db()
+        self.assertEqual(tag.name, payload['name'])
+        
+
+    def test_delete_tag(self):
+        """Delete Tag"""
+        tag= Tag.objects.create(user=self.user, name='Breakfast')
+        res=self.client.delete(detail_url(tag.id))
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+        tags=Tag.objects.filter(user=self.user)
+        self.assertFalse(tags.exists())
+        
+    def test_create_recipe_with_new_tags(self):
+        """Test creating a recipe with new tags."""
+        
+        payload={
+            'title':'Chocolate Cheesecake',
+            'time_minutes':30,
+            'price':Decimal('5.00'),
+            'tags':[{'name':'Dessert','name':'Cheesecake'}]
+        }
+        
+        res=self.client.post(RECIPES_URL, payload)
