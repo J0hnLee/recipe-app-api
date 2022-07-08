@@ -43,9 +43,11 @@ INSTALLED_APPS = [
     'drf_spectacular',
     'user',
     'recipe',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,6 +56,15 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
+if DEBUG:
+    import socket  # only if you haven't already imported this
+    # 把這個 middleware 加到第一個
+    MIDDLEWARE.insert(0,  'debug_toolbar.middleware.DebugToolbarMiddleware')
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [
+        ip[: ip.rfind(".")] + ".1" for ip in ips] + ["127.0.0.1", "10.0.2.2"]
 
 ROOT_URLCONF = 'app.urls'
 
@@ -139,8 +150,8 @@ AUTH_USER_MODEL = 'core.User'
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    
+
 }
 
 NOSE_ARGS = ['--nocapture',
-             '--nologcapture',]
+             '--nologcapture', ]
