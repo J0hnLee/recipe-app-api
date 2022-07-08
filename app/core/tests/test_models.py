@@ -25,15 +25,18 @@ class ModelTests(TestCase):
         email = 'test@example.com'
         password = 'Testpass123'
 
-        user = get_user_model().objects.create_user(email=email, password=password)
+        user = get_user_model().objects.create_user(
+            email=email, password=password)
         self.assertEqual(user.email, email)
         self.assertEqual(user.check_password(password), True)
 
     def test_new_user_email_normalized(self):
         """Test the email for a new user is normalized"""
         password = 'Testpass123'
-        sample_emails = [['test1@EXAMPLE.com', 'test1@example.com'], ['Test2@Example.com', 'Test2@example.com'],
-                         ['TEST3@EXAMPLE.COM', 'TEST3@example.com'], ['test4@example.COM', 'test4@example.com']]
+        sample_emails = [['test1@EXAMPLE.com', 'test1@example.com'],
+                         ['Test2@Example.com', 'Test2@example.com'],
+                         ['TEST3@EXAMPLE.COM', 'TEST3@example.com'],
+                         ['test4@example.COM', 'test4@example.com']]
 
         for email, expected in sample_emails:
             user = get_user_model().objects.create_user(email, password)
@@ -48,7 +51,9 @@ class ModelTests(TestCase):
         """Test creating a new superuser"""
         email = 'test@example.com'
         password = 'Testpass123'
-        user = get_user_model().objects.create_superuser(email=email, password=password)
+        user = get_user_model().objects.create_superuser(
+            email=email,
+            password=password)
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
 
@@ -57,8 +62,12 @@ class ModelTests(TestCase):
         user = get_user_model().objects.create_user(
             email='test@example.com', password='Testpass123')
 
-        recipe = models.Recipe.objects.create(user=user, title="Sample recipe name", time_minutes=5,
-                                              price=Decimal('5.50'), description='Sample recipe description.', )
+        recipe = models.Recipe.objects.create(
+            user=user,
+            title="Sample recipe name",
+            time_minutes=5,
+            price=Decimal('5.50'),
+            description='Sample recipe description.', )
 
         self.assertEqual(recipe.title, 'Sample recipe name')
 
