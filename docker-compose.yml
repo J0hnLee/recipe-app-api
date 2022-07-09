@@ -11,6 +11,7 @@ services:
       - 8050:8050
     volumes:
       - ./app:/app
+      - dev-static-data:/vol/web
 
     command: >
       sh -c "python manage.py wait_for_db && 
@@ -36,6 +37,7 @@ services:
 
 volumes:
   dev-db-data:
+  dev-static-data:
 
   # driver: local
   # path: /var/lib/postgresql/data
