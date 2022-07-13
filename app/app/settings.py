@@ -173,3 +173,8 @@ NOSE_ARGS = ['--nocapture',
 #     'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
 #     'REDOC_DIST': 'SIDECAR',
 # }
+
+SPECTACULAR_SETTINGS = {
+    'COMPONENT_SPLIT_REQUEST': True,
+
+}
