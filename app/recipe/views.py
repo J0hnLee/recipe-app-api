@@ -2,12 +2,12 @@
 Views for the recipe APIs.
 
 """
-# from drf_spectacular.utils import (
-#     extend_schema_views,
-#     extend_schema,
-#     OpenApiParameter,
-#     OpenApiTypes,
-# )
+from drf_spectacular.utils import (
+    extend_schema_view,
+    extend_schema,
+    OpenApiParameter,
+    OpenApiTypes,
+)
 
 
 from rest_framework import (
@@ -25,6 +25,14 @@ from core.models import (Recipe, Tag, Ingredient)
 from recipe import serializers
 
 
+@extend_schema_view(
+    list=extend_schema(
+        parameters=[
+            OpenApiParameter('tags', OpenApiTypes.STR,
+                             description='Comma separated list of tags'),
+        ]
+    )
+)
 class RecipeViewSet(viewsets.ModelViewSet):
     """ViewSet for the Recipe APIs. \n
         You can increase more details in the serializer class.
@@ -42,7 +50,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
         """Retrieve recipes for the current authenticated user only."""
         tags = self.request.query_params.get('tags')
         ingredients = self.request.query_params.get('ingredients')
-        queryset = self.queryset.filter(ingredients__isnull=False)
+        queryset = self.queryset
         if tags:
             tag_ids = self._params_to_ints(tags)
             queryset = queryset.filter(tags__id__in=tag_ids)
@@ -69,7 +77,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-    @action(methods=['POST'], detail=True, url_path='upload-image')
+    @ action(methods=['POST'], detail=True, url_path='upload-image')
     def upload_image(self, request, pk=None):
         """Upload an image to recipe."""
         recipe = self.get_object()
