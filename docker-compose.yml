@@ -29,9 +29,9 @@ services:
     restart: always
     image: postgres:13-alpine
     volumes:
-      - ./dev:/var/lib/postgresql/data
-    # command: >
-    #   sh -c  "chmod 0700 /var/lib/postgresql/data"
+      - ./dev-db-data:/var/lib/postgresql/data
+    command: >
+      sh -c  "chmod 0700 /var/lib/postgresql/data"
     environment:
       - POSTGRES_DB=devdb
       - POSTGRES_USER=devuser
