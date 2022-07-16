@@ -23,6 +23,7 @@ from rest_framework.permissions import IsAuthenticated
 
 from core.models import (Recipe, Tag, Ingredient)
 from recipe import serializers
+import pdb
 
 
 @extend_schema_view(
@@ -57,6 +58,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         """Retrieve recipes for the current authenticated user only."""
         tags = self.request.query_params.get('tags')
+        pdb.set_trace()
+
         ingredients = self.request.query_params.get('ingredients')
         queryset = self.queryset
         if tags:
