@@ -6,6 +6,7 @@ COPY ./requirements.txt /tmp/requirements.txt
 COPY ./requirements.dev.txt /tmp/requirements.dev.txt
 COPY ./scripts /scripts
 COPY ./app /app
+# def the app directory as the working directory.
 WORKDIR /app
 EXPOSE 8050
 
@@ -38,6 +39,16 @@ RUN python -m venv /py && \
 # chmod -R +x /scripts
 
 ENV PATH="/scripts:/py/bin:$PATH"
+#create user called 'user' to run the app only.
+# If not doing this app will run in root account which is not recommand. 
+# RUN adduser -D user
+# USER user
+
 USER django-user
 
 CMD ["run.sh"]
+
+
+#after setting up the dockerfile
+# run the dockerfile to build the image.
+#type "docker build ." in terminal. 
