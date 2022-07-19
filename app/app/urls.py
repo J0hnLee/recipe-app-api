@@ -37,6 +37,9 @@ urlpatterns = [
         SpectacularSwaggerView.as_view(url_name='api-schema'),
         name='api-docs'
     ),
+    path('dj-rest-auth/', include('dj_rest_auth.urls')),
+    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+
     path('api/user/', include('user.urls')),
     path('api/recipe/', include('recipe.urls')),
 
